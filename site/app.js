@@ -369,8 +369,8 @@
       if (!observed.length) return;
       let fill = null;
       if (method === 2 || method === 3) {
-        const nums = observed.map(numericValue).filter((value) => value !== null);
-        if (!nums.length) return;
+        const nums = observed.map(numericValue);
+        if (!nums.length || nums.some((value) => value === null)) return;
         fill = method === 2 ? nums.reduce((a, b) => a + b, 0) / nums.length : median(nums);
       } else if (method === 4) {
         fill = mode(observed);
@@ -464,9 +464,13 @@
   }
 
   function scoreResult(before, after, elapsedMs) {
-    const beforeIssues = before.missingCells + before.duplicateRows + before.outlierCells;
-    const afterIssues = after.missingCells + after.duplicateRows + after.outlierCells;
-    const issueReduction = beforeIssues === 0 ? 1 : Math.max(0, Math.min(1, (beforeIssues - afterIssues) / beforeIssues));
+    // Normalize each issue family separately: their counts use different units.
+    const reductions = [
+      ["missingCells", before.missingCells, after.missingCells],
+      ["duplicateRows", before.duplicateRows, after.duplicateRows],
+      ["outlierCells", before.outlierCells, after.outlierCells]
+    ].filter((item) => item[1] > 0).map((item) => Math.max(0, Math.min(1, (item[1] - item[2]) / item[1])));
+    const issueReduction = reductions.length ? reductions.reduce((sum, value) => sum + value, 0) / reductions.length : 1;
     const rowRetention = before.rowCount === 0 ? 1 : Math.min(1, after.rowCount / before.rowCount);
     const timeFactor = 1 / (1 + Math.max(0, elapsedMs) / 5000);
     return Math.round((issueReduction * 70 + rowRetention * 20 + timeFactor * 10) * 10) / 10;
@@ -717,7 +721,7 @@
       })),
       safeguards: [
         "Every individual trial starts from a fresh copy of the unchanged original dataset.",
-        "Missing counts are cells, duplicate counts are excess rows, and outlier counts are numeric cells; they are not a common instance unit.",
+        "Missing counts are cells, duplicate counts are excess rows, and outlier counts are numeric cells; they are not a common instance unit. The provisional score normalizes each issue family separately before averaging.",
         "The heuristic score is not correction accuracy and is not ground-truth validation.",
         "Review domain constraints and valid unusual observations before accepting a cleaned dataset.",
         "Advanced methods that require learned models or domain rules are listed but not auto-executed."

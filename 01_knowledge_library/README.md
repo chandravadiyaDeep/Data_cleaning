@@ -1,17 +1,11 @@
 # 01 — Knowledge Library
 
-**Purpose:** Build a trustworthy conceptual map of data cleaning and data quality.
+Foundational knowledge about data quality, data structures, semantics, and problem categories.
 
-## Suggested sections
+## Main areas
 
-- `foundations/` — definitions, lifecycle, data quality dimensions, profiling, lineage, provenance, governance.
-- `data_types/` — tabular, transactional, time-series, text, geospatial, image, document, and multimodal data.
-- `problem_taxonomy/` — missingness, duplication, validity, consistency, outliers, structural and integration issues.
-- `domain_knowledge/` — industry terminology, units, constraints, and business rules.
-- `intended_use/` — requirements for reporting, analytics, statistics, and machine learning.
+- `foundations/` — concepts, quality dimensions, profiling, lineage, and governance.
+- `data_types/` — tabular, text, time-series, geospatial, transactional, and unstructured data.
+- [`02_data_cleaning_categories/`](./02_data_cleaning_categories/README.md) — the 18-category practical data-cleaning taxonomy.
 
-## Required format
-
-Use `_templates/knowledge_note.md` for substantial topic notes. Define terms, explain why the issue occurs, identify context dependencies, and cite sources.
-
-This library explains **what the data and problems mean**. Put detailed algorithm comparisons in the Technique Library.
+Each category folder links to its technique catalogue and matching end-to-end approach. This is a practical research taxonomy, not an official exhaustive standard; categories can overlap.

@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070b14">
+  <meta name="description" content="A minimal browser-only dataset upload test page.">
+  <title>Data Cleaning Lab — Upload</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b14;
+      --panel: #0c1424;
+      --muted: #8393ad;
+      --text: #edf4ff;
+      --blue: #4d8dff;
+      --cyan: #57d5ff;
+      --good: #48d7a0;
+      --danger: #ff7b8e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 32px 18px;
+      overflow-x: hidden;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(ellipse at 50% 5%, rgba(39, 111, 232, .17), transparent 42%),
+        radial-gradient(ellipse at 90% 95%, rgba(34, 174, 224, .08), transparent 34%),
+        var(--bg);
+    }
+    .shell { width: min(100%, 720px); }
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 54px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: #cfddf5;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(83, 151, 255, .48);
+      border-radius: 9px;
+      color: #8db8ff;
+      background: linear-gradient(145deg, rgba(61, 127, 255, .2), rgba(67, 205, 255, .05));
+      box-shadow: 0 0 24px rgba(51, 123, 245, .14);
+    }
+    .local-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border: 1px solid rgba(72, 215, 160, .18);
+      border-radius: 999px;
+      color: #9be8c9;
+      background: rgba(72, 215, 160, .06);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .local-pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--good);
+      box-shadow: 0 0 10px rgba(72, 215, 160, .9);
+    }
+    .intro { margin-bottom: 30px; }
+    .eyebrow {
+      margin: 0 0 14px;
+      color: #74a8ff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      max-width: 650px;
+      font-size: clamp(38px, 8vw, 64px);
+      line-height: .99;
+      font-weight: 760;
+      letter-spacing: -.065em;
+    }
+    h1 span {
+      color: #79adff;
+      text-shadow: 0 0 36px rgba(77, 141, 255, .22);
+    }
+    .subtitle {
+      max-width: 450px;
+      margin: 19px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .upload-card {
+      padding: 12px;
+      border: 1px solid rgba(121, 158, 215, .2);
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(16, 29, 50, .92), rgba(9, 16, 29, .94));
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255,255,255,.035);
+    }
+    .dropzone {
+      min-height: 270px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      border: 1px dashed rgba(104, 157, 245, .43);
+      border-radius: 15px;
+      text-align: center;
+      background:
+        linear-gradient(rgba(77, 141, 255, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 141, 255, .035) 1px, transparent 1px),
+        rgba(4, 11, 23, .48);
+      background-size: 28px 28px;
+      transition: border-color .18s ease, background-color .18s ease, transform .18s ease;
+    }
+    .dropzone.dragover {
+      border-color: var(--cyan);
+      background-color: rgba(35, 119, 190, .12);
+      transform: translateY(-2px);
+    }
+    .upload-icon {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 19px;
+      border: 1px solid rgba(93, 156, 255, .32);
+      border-radius: 17px;
+      color: #8fc0ff;
+      background: linear-gradient(145deg, rgba(66, 131, 255, .2), rgba(58, 185, 255, .06));
+      box-shadow: 0 10px 34px rgba(35, 111, 231, .13);
+    }
+    .drop-title { margin: 0; font-size: 17px; font-weight: 700; }
+    .drop-copy { margin: 9px 0 19px; color: var(--muted); font-size: 13px; }
+    .choose-button {
+      display: inline-flex;
+      min-height: 43px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 19px;
+      border: 1px solid rgba(158, 194, 255, .25);
+      border-radius: 10px;
+      color: white;
+      background: linear-gradient(110deg, #3477f6, #2361d6);
+      box-shadow: 0 8px 24px rgba(44, 110, 235, .25);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: filter .18s ease, transform .18s ease;
+    }
+    .choose-button:hover { filter: brightness(1.12); transform: translateY(-1px); }
+    .choose-button:focus-visible, .remove-button:focus-visible, .dropzone:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 4px;
+    }
+    .file-types { margin: 16px 0 0; color: #667995; font-size: 11px; }
+    .file-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+    .selected-file {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 16px;
+      border: 1px solid rgba(72, 215, 160, .2);
+      border-radius: 13px;
+      background: rgba(72, 215, 160, .055);
+    }
+    .file-symbol {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: #8fe7c3;
+      background: rgba(72, 215, 160, .1);
+    }
+    .file-meta { min-width: 0; flex: 1; }
+    .file-name {
+      overflow: hidden;
+      margin: 0;
+      color: #e7f7f0;
+      font-size: 13px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .file-detail { margin: 5px 0 0; color: #8aa99e; font-size: 11px; }
+    .remove-button {
+      border: 0;
+      padding: 8px 9px;
+      border-radius: 8px;
+      color: #a8b6ca;
+      background: rgba(255,255,255,.055);
+      font: inherit;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .remove-button:hover { color: white; background: rgba(255,255,255,.1); }
+    .message {
+      min-height: 19px;
+      margin: 12px 4px 0;
+      color: var(--danger);
+      font-size: 12px;
+    }
+    .privacy-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 20px 4px 0;
+      color: #74859f;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    .privacy-note svg { flex: 0 0 auto; margin-top: 1px; color: #65b7e8; }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 45px;
+      color: #4d5c73;
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    [hidden] { display: none !important; }
+    @media (max-width: 520px) {
+      body { padding: 25px 15px; }
+      .topline { margin-bottom: 42px; }
+      .brand { font-size: 10px; letter-spacing: .1em; }
+      .local-pill { font-size: 9px; padding: 7px 9px; }
+      .dropzone { min-height: 245px; }
+      .footer { margin-top: 35px; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topline">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="m4.5 7.8 7.5 4.4 7.5-4.4M12 12.2V21"/></svg>
+        </span>
+        <span>Data Cleaning Lab</span>
+      </div>
+      <span class="local-pill">Local only</span>
+    </header>
+
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Dataset intake / 001</p>
+      <h1 id="page-title">Bring your <span>dataset.</span></h1>
+      <p class="subtitle">Choose one data file from your device to begin the test. Nothing else happens on this page.</p>
+    </section>
+
+    <section class="upload-card" aria-label="Dataset upload">
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose or drop one dataset file">
+        <div class="upload-icon" aria-hidden="true">
+          <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M5 14.5v3A2.5 2.5 0 0 0 7.5 20h9a2.5 2.5 0 0 0 2.5-2.5v-3"/></svg>
+        </div>
+        <p class="drop-title">Drop your dataset here</p>
+        <p class="drop-copy">or choose a file from your computer</p>
+        <label class="choose-button" for="dataset-input">Choose file</label>
+        <input class="file-input" id="dataset-input" type="file" accept=".csv,.tsv,.xlsx,.xls,.json,.parquet,.txt">
+        <p class="file-types">CSV · TSV · Excel · JSON · Parquet · TXT</p>
+      </div>
+
+      <div class="selected-file" id="selected-file" hidden aria-live="polite">
+        <div class="file-symbol" aria-hidden="true">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10z"/><path d="M13 3v7h7M8 15h8M8 18h5"/></svg>
+        </div>
+        <div class="file-meta">
+          <p class="file-name" id="file-name"></p>
+          <p class="file-detail" id="file-detail"></p>
+        </div>
+        <button class="remove-button" id="remove-file" type="button">Remove</button>
+      </div>
+      <p class="message" id="message" role="alert" aria-live="polite"></p>
+    </section>
+
+    <p class="privacy-note">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 5v2"/></svg>
+      Your file stays on this device. This GitHub Pages test page does not read, process, transmit or store the file.
+    </p>
+
+    <footer class="footer">
+      <span>Upload interface preview</span>
+      <span>No processing enabled</span>
+    </footer>
+  </main>
+
+  <script>
+    // Keep the selected File object only in this browser page; never transmit it.
+    const input = document.getElementById("dataset-input");
+    const dropzone = document.getElementById("dropzone");
+    const selectedFilePanel = document.getElementById("selected-file");
+    const fileName = document.getElementById("file-name");
+    const fileDetail = document.getElementById("file-detail");
+    const message = document.getElementById("message");
+    const removeButton = document.getElementById("remove-file");
+
+    const allowedExtensions = new Set(["csv", "tsv", "xlsx", "xls", "json", "parquet", "txt"]);
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return "0 bytes";
+      const units = ["bytes", "KB", "MB", "GB"];
+      const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+      const value = bytes / Math.pow(1024, index);
+      return value.toFixed(index === 0 ? 0 : 2) + " " + units[index];
+    }
+
+    function showFile(file) {
+      message.textContent = "";
+      if (!file) return;
+
+      const extension = file.name.includes(".")
+        ? file.name.split(".").pop().toLowerCase()
+        : "";
+
+      if (!allowedExtensions.has(extension)) {
+        input.value = "";
+        selectedFilePanel.hidden = true;
+        message.textContent = "That file type is not supported by this upload test.";
+        return;
+      }
+
+      fileName.textContent = file.name;
+      fileDetail.textContent = extension.toUpperCase() + " · " + formatBytes(file.size) + " · Ready in this browser";
+      selectedFilePanel.hidden = false;
+      dropzone.hidden = true;
+    }
+
+    function clearFile() {
+      input.value = "";
+      selectedFilePanel.hidden = true;
+      dropzone.hidden = false;
+      message.textContent = "";
+    }
+
+    input.addEventListener("change", () => showFile(input.files && input.files[0]));
+    removeButton.addEventListener("click", clearFile);
+
+    dropzone.addEventListener("click", (event) => {
+      if (event.target.closest("label")) return;
+      input.click();
+    });
+
+    dropzone.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        input.click();
+      }
+    });
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.add("dragover");
+      });
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.remove("dragover");
+      });
+    });
+
+    dropzone.addEventListener("drop", (event) => {
+      const file = event.dataTransfer && event.dataTransfer.files[0];
+      if (!file) return;
+
+      const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "";
+      if (!allowedExtensions.has(extension)) {
+        message.textContent = "That file type is not supported by this upload test.";
+        return;
+      }
+
+      const transfer = new DataTransfer();
+      transfer.items.add(file);
+      input.files = transfer.files;
+      showFile(file);
+    });
+  </script>
+</body>
+</html>

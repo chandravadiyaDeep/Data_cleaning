@@ -52,7 +52,7 @@
       [3, "Keep last", "Keep the last record in each exact duplicate group.", true],
       [4, "Keep most complete", "Keep the row with the most populated cells in each exact group.", true],
       [5, "Merge exact duplicates", "Merge exact groups while retaining the first non-empty value per column.", true],
-      [6, "Similarity-based detection", "Flag near-matches for review; no automatic merge.", true],
+      [6, "Similarity-based detection", "Requires a chosen similarity model and thresholds; not auto-run.", false],
       [7, "Fuzzy matching", "Needs domain-specific similarity thresholds; not auto-merged.", false],
       [8, "Domain-specific resolution", "Requires a business key and conflict-resolution rule.", false],
       [9, "Other suitable treatment", "Requires a user-defined deduplication policy.", false]
@@ -517,7 +517,7 @@
       '<div class="engine-heading"><div><p class="section-label">Interactive experiment workspace</p><h2 class="section-title">Your dataset, under test.</h2><p class="engine-subtitle">The four Approach 01 capabilities now run locally in this browser. Nothing is sent to a server.</p></div><span class="engine-state" id="engine-state">Dataset ready</span></div>',
       '<div class="engine-grid" id="profile-grid"></div>',
       '<div class="engine-panel"><div class="engine-panel-head"><div><span class="engine-step">CAPABILITY 01</span><h3>Problem identification</h3><p>Detected issues and affected instances in your original dataset.</p></div><span class="engine-state" id="profile-status">Profile complete</span></div><div id="profile-details"></div></div>',
-      '<div class="engine-panel"><div class="engine-panel-head"><div><span class="engine-step">CAPABILITY 02</span><h3>Candidate strategy generation</h3><p>All ten research codes are listed. Methods requiring domain rules or advanced models are identified rather than falsely treated as executable.</p></div><button class="engine-button" id="generate-button" type="button">Generate candidates</button></div><div id="candidate-groups" class="candidate-groups"></div></div>',
+      '<div class="engine-panel"><div class="engine-panel-head"><div><span class="engine-step">CAPABILITY 02</span><h3>Candidate strategy generation</h3><p>All ten research codes are listed. Methods requiring domain rules or advanced models are identified rather than falsely treated as executable.</p></div><button class="engine-button" id="generate-button" type="button">Regenerate candidates</button></div><div id="candidate-groups" class="candidate-groups"></div></div>',
       '<div class="engine-panel"><div class="engine-panel-head"><div><span class="engine-step">CAPABILITY 03</span><h3>Independent experiment execution</h3><p>Each supported individual trial starts from the untouched original dataset. Trials do not modify one another.</p></div><button class="engine-button primary" id="run-button" type="button">Run individual trials</button></div><div id="trial-status" class="engine-hint">Generate candidates to review the available experiments.</div><div id="trial-results"></div></div>',
       '<div class="engine-panel"><div class="engine-panel-head"><div><span class="engine-step">CAPABILITY 04</span><h3>Compare, combine and select</h3><p>Compare measured outcomes, choose one candidate per category, and run a combined configuration from the same original dataset.</p></div><span class="engine-state">Evidence-led selection</span></div><div class="configuration-grid" id="configuration-controls"></div><div class="engine-actions"><button class="engine-button primary" id="combined-button" type="button">Run selected combination</button><button class="engine-button" id="export-button" type="button" disabled>Export selected dataset</button><button class="engine-button" id="report-button" type="button" disabled>Download experiment report</button></div><div id="comparison-results"></div><div class="selection-note" id="selection-note">No final result selected yet.</div></div>',
       '<div class="engine-footnote"><strong>Important:</strong> The provisional comparison score is a transparent heuristic based on issue-count reduction, row retention and runtime. It is not correction accuracy or ground truth. A controlled dataset with known correct values is required to measure correction accuracy. Review the data and trade-offs before using a result.</div>'
@@ -582,7 +582,10 @@
 
   function bindWorkspaceEvents() {
     $("#generate-button").addEventListener("click", () => {
-      $("#trial-status").textContent = "Candidate strategies generated. Review runnable and review-only methods, then run the independent trials.";
+      state.candidates = buildCandidates(state.profile);
+      renderCandidates();
+      renderConfigurationControls();
+      $("#trial-status").textContent = "Candidate strategies regenerated from the current dataset profile. Review runnable and review-only methods, then run independent trials.";
       $("#run-button").focus();
     });
     $("#run-button").addEventListener("click", runAllTrials);

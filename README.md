@@ -7,6 +7,7 @@ A research-first knowledge base for understanding, evaluating, and designing rel
 | Area | Purpose |
 |---|---|
 | [01_knowledge_library](01_knowledge_library/) | Foundational concepts, data-quality dimensions, data types, problem taxonomy, and domain knowledge. |
+| [sectors](sectors/README.md) | 33 sector profiles covering business context, data entities and structures, recurring problems, business meaning, cleaning requirements, unsafe actions, metrics and references. |
 | [02_technique_library](02_technique_library/) | Individual cleaning methods, algorithms, detection techniques, transformations, and validation methods. |
 | [03_experiment_library](03_experiment_library/) | Reproducible experiments, datasets, benchmarks, evaluations, and lessons learned. |
 | [04_approaches](04_approaches/) | End-to-end strategies and decision frameworks for selecting and combining techniques. |
@@ -32,4 +33,4 @@ This repository is a research workspace, not the NUMPA production codebase. Code
 
 ## Status
 
-Initial repository structure established. Detailed research and experiments will be added progressively.
+Initial research libraries established. The repository now includes 33 cross-industry sector profiles; detailed evidence reviews and experiments will be added progressively.

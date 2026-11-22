@@ -1,26 +1,7 @@
 # 02 — Technique Library
 
-**Purpose:** Document individual data-cleaning and data-quality techniques in enough depth to support informed selection and later implementation.
+A catalogue of individual detection, correction, transformation, and validation methods.
 
-## Suggested sections
+The library mirrors the 18 categories in the Knowledge Library. Each category has an initial inventory of 10 or more techniques to investigate. These are research inventories, not claims that every method is suitable or that every item is strictly a cleaning operation.
 
-- `missing_values/`
-- `duplicates_and_entity_resolution/`
-- `types_parsing_standardization/`
-- `outliers_and_anomalies/`
-- `numerical_transformations/`
-- `categorical_transformations/`
-- `text_cleaning/`
-- `time_series/`
-- `geospatial/`
-- `structural_and_schema/`
-- `relational_integrity/`
-- `data_integration/`
-- `label_quality/`
-- `validation_and_constraints/`
-
-## Required technique documentation
-
-Use `_templates/technique_note.md`. Cover assumptions, suitability, parameter choices, complexity, edge cases, failure modes, implementation references, and post-operation validation.
-
-Distinguish **detection** (finding a possible issue), **correction** (changing data), and **validation** (checking the result). A detected anomaly is not automatically an error, and a proposed correction is not automatically safe.
+Start at [the Knowledge Library category index](../01_knowledge_library/02_data_cleaning_categories/README.md), then open the matching category folder. Use `_templates/technique_note.md` to expand each method into a fully researched note.

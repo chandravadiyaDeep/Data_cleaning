@@ -340,6 +340,67 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
+
+    /* Browser experiment workspace */
+    .experiment-app { margin: -22px 0 58px; scroll-margin-top: 24px; }
+    .engine-heading { display:flex; justify-content:space-between; align-items:end; gap:18px; margin:0 0 18px; }
+    .engine-subtitle { margin:9px 0 0; color:var(--muted); font-size:12px; line-height:1.65; }
+    .engine-state { display:inline-flex; align-items:center; white-space:nowrap; padding:7px 10px; border:1px solid rgba(100,221,176,.2); border-radius:999px; color:#8ce2c1; background:rgba(100,221,176,.055); font-size:9px; font-weight:750; letter-spacing:.08em; text-transform:uppercase; }
+    .engine-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:9px; margin-bottom:13px; }
+    .engine-metric { min-width:0; padding:15px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(145deg,rgba(16,29,49,.9),rgba(11,19,33,.9)); }
+    .engine-metric span,.engine-metric small { display:block; color:#8799b3; font-size:10px; }
+    .engine-metric strong { display:block; margin:8px 0 4px; color:#dceaff; font-size:25px; letter-spacing:-.05em; }
+    .engine-panel { margin:13px 0; padding:19px; border:1px solid var(--line); border-radius:15px; background:linear-gradient(145deg,rgba(16,29,49,.88),rgba(10,18,31,.92)); }
+    .engine-panel-head { display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:15px; }
+    .engine-step { color:#7eafff; font-size:9px; font-weight:800; letter-spacing:.16em; }
+    .engine-panel-head h3 { margin:6px 0 5px; color:#e4efff; font-size:17px; letter-spacing:-.03em; }
+    .engine-panel-head p { max-width:700px; margin:0; color:#8798b1; font-size:11px; line-height:1.6; }
+    .engine-button { min-height:37px; padding:0 13px; border:1px solid rgba(128,166,225,.2); border-radius:8px; color:#c8dcfb; background:rgba(255,255,255,.045); font-size:10px; font-weight:750; cursor:pointer; }
+    .engine-button:hover:not(:disabled),.table-select:hover { border-color:rgba(99,216,246,.4); background:rgba(87,148,255,.12); }
+    .engine-button.primary { border-color:rgba(93,154,255,.35); color:white; background:linear-gradient(110deg,#3477f6,#2361d6); }
+    .engine-button:disabled { opacity:.4; cursor:not-allowed; }
+    .profile-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:13px; }
+    .profile-line { display:grid; grid-template-columns:1fr auto; gap:5px 10px; padding:12px; border:1px solid var(--line); border-radius:10px; background:rgba(255,255,255,.02); }
+    .profile-line strong { color:#d7e6fb; font-size:11px; }
+    .profile-line span { color:#9fc4ff; font-size:13px; font-weight:800; }
+    .profile-line small { grid-column:1/-1; color:#7f91aa; font-size:9px; line-height:1.45; }
+    .column-table-wrap,.table-scroll { width:100%; overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+    .engine-table { width:100%; border-collapse:collapse; font-size:10px; white-space:nowrap; }
+    .engine-table th { padding:10px 11px; color:#92a8c7; background:rgba(87,148,255,.07); text-align:left; font-size:9px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    .engine-table td { padding:10px 11px; border-top:1px solid var(--line); color:#b6c5db; }
+    .engine-table tr:hover td { background:rgba(255,255,255,.018); }
+    .engine-hint { margin:11px 0 0; color:#8496b0; font-size:10px; line-height:1.65; }
+    .candidate-groups { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+    .candidate-group { min-width:0; padding:12px; border:1px solid var(--line); border-radius:11px; background:rgba(3,9,18,.22); }
+    .candidate-group-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; }
+    .candidate-group-head h4 { margin:0; color:#dce9fc; font-size:12px; }
+    .candidate-group-head span { color:#7f95b5; font-size:8px; text-align:right; }
+    .candidate-row { display:flex; align-items:flex-start; gap:8px; padding:9px 0; border-top:1px solid rgba(133,165,215,.09); }
+    .candidate-code { display:grid; width:22px; height:22px; flex:0 0 22px; place-items:center; border:1px solid rgba(114,154,218,.18); border-radius:6px; color:#9bb1d0; font-size:9px; font-weight:800; }
+    .candidate-code.baseline { color:#83dbb9; border-color:rgba(100,221,176,.25); }
+    .candidate-copy { min-width:0; flex:1; }
+    .candidate-copy strong,.candidate-copy small { display:block; }
+    .candidate-copy strong { color:#cbdcf4; font-size:9px; line-height:1.4; }
+    .candidate-copy small { margin-top:3px; color:#778ba8; font-size:8px; line-height:1.5; white-space:normal; }
+    .candidate-copy .candidate-warning { color:#d4ad6d; }
+    .candidate-status { flex:0 0 auto; padding:4px 5px; border-radius:5px; font-size:7px; font-weight:800; text-transform:uppercase; }
+    .candidate-status.available { color:#8cdbbb; background:rgba(100,221,176,.08); }
+    .candidate-status.review { color:#d8b875; background:rgba(244,195,107,.08); }
+    .configuration-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+    .configuration-control { display:grid; gap:7px; color:#9db1cf; font-size:10px; font-weight:750; }
+    .configuration-control select { width:100%; min-height:39px; padding:0 10px; border:1px solid var(--line-strong); border-radius:8px; color:#e1edff; background:#101c30; font-size:10px; }
+    .engine-actions { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+    .table-select { padding:6px 8px; border:1px solid rgba(128,166,225,.2); border-radius:6px; color:#bcd5fa; background:rgba(87,148,255,.07); font-size:9px; cursor:pointer; }
+    .comparison-heading { margin:18px 0 9px; color:#dce9fc; font-size:12px; }
+    .selection-note { margin-top:12px; padding:12px; border:1px solid rgba(100,221,176,.2); border-radius:9px; color:#9fc8b8; background:rgba(100,221,176,.045); font-size:10px; line-height:1.6; }
+    .selection-note strong { color:#c3f1df; }
+    .engine-footnote { margin-top:13px; padding:14px 16px; border:1px solid rgba(244,195,107,.17); border-radius:11px; color:#a99b7e; background:rgba(244,195,107,.04); font-size:10px; line-height:1.7; }
+    .engine-footnote strong { color:#efd19a; }
+    .engine-loading,.engine-error { margin:14px 0; padding:18px; border:1px solid var(--line); border-radius:12px; color:#b9cce8; background:rgba(87,148,255,.06); font-size:12px; line-height:1.7; }
+    .engine-error { border-color:rgba(255,129,148,.22); color:#ffc0ca; background:rgba(255,129,148,.05); }
+    .engine-error p { margin:7px 0 0; color:#b9909a; }
+    @media(max-width:900px) { .engine-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .candidate-groups { grid-template-columns:1fr 1fr; } }
+    @media(max-width:650px) { .experiment-app { margin-top:-10px; } .engine-heading,.engine-panel-head { align-items:flex-start; flex-direction:column; } .engine-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .profile-summary { grid-template-columns:1fr; } .candidate-groups,.configuration-grid { grid-template-columns:1fr; } .engine-panel { padding:14px; } .engine-state { font-size:8px; } }
   </style>
 </head>
 <body>
@@ -415,7 +476,7 @@
               <div class="number-cell"><strong>10</strong><span>Candidate codes per category</span></div>
             </div>
           </div>
-          <p class="side-note">The browser prototype now supports local profiling, candidate generation, independent experiments, comparisons and evidence-led selection. Advanced methods are clearly marked when they are not yet executable.</p>
+          <p class="side-note">Four Approach 01 capabilities now run locally: problem identification, candidate generation, independent trials, and result comparison / selection. Advanced methods requiring learned models or domain rules are clearly marked for review.</p>
         </aside>
       </section>
 

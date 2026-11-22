@@ -313,7 +313,7 @@
         const iqr = q3 - q1;
         const lower = q1 - 1.5 * iqr;
         const upper = q3 + 1.5 * iqr;
-        const count = iqr === 0 ? 0 : values.filter((value) => value < lower || value > upper).length;
+        const count = values.filter((value) => value < lower || value > upper).length;
         numericColumns.push({ name: header, values, q1, q3, iqr, lower, upper, count });
         outlierByColumn[header] = count;
         outlierCells += count;

@@ -38,4 +38,4 @@ GitHub Pages is static hosting. The upload page only selects a local file in the
 
 ## Scope
 
-This repository is a research workspace and upload-interface test, not the NUMPA production codebase. The first data-cleaning approach will be designed separately before any cleaning or analysis functionality is implemented.
+This repository is a research workspace and upload-interface test, not the NUMPA production codebase. The first experimental multi-strategy cleaning approach is documented as the current UI direction. The page presents its proposed workflow, but no profiling, strategy execution, comparison or selection engine is implemented yet.

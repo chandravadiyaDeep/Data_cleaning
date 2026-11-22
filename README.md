@@ -32,7 +32,7 @@ A research-first workspace for understanding data-quality problems and designing
 
 ## GitHub Pages setup
 
-The repository contains a GitHub Actions workflow that publishes only the `site/` directory. In **Settings → Pages → Build and deployment → Source**, select **GitHub Actions** once. Future updates to `site/` on `main` will trigger deployment automatically.
+The repository contains a GitHub Actions workflow that publishes only the `site/` directory. In **Settings → Pages → Build and deployment → Source**, select **GitHub Actions** once. Then open **Actions → Deploy dataset upload page → Run workflow** to start the first deployment. Future updates to `site/` on `main` will trigger deployment automatically.
 
 GitHub Pages is static hosting. The upload page only selects a local file in the browser; no file is sent to GitHub, a backend or a third-party service. Server-side processing and persistent upload storage are not part of this first test page.
 

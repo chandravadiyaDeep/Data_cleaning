@@ -384,8 +384,8 @@
             <p class="drop-title">Start with your original data</p>
             <p class="drop-copy">Drop one dataset here, or browse your device</p>
             <label class="choose-button" for="dataset-input">Choose dataset</label>
-            <input class="file-input" id="dataset-input" type="file" accept=".csv,.tsv,.xlsx,.xls,.json,.parquet,.txt">
-            <p class="formats">CSV · TSV · XLSX · XLS · JSON · PARQUET · TXT</p>
+            <input class="file-input" id="dataset-input" type="file" accept=".csv,.tsv,.xlsx,.xls,.json,.jsonl,.txt">
+            <p class="formats">CSV · TSV · XLSX · XLS · JSON · JSONL · TXT</p>
           </div>
 
           <div class="selected-file" id="selected-file" hidden aria-live="polite">
@@ -415,7 +415,7 @@
               <div class="number-cell"><strong>10</strong><span>Candidate codes per category</span></div>
             </div>
           </div>
-          <p class="side-note">This page is the intake and interface prototype. Profiling, strategy execution, comparison and selection are not enabled yet.</p>
+          <p class="side-note">The browser prototype now supports local profiling, candidate generation, independent experiments, comparisons and evidence-led selection. Advanced methods are clearly marked when they are not yet executable.</p>
         </aside>
       </section>
 
@@ -425,7 +425,7 @@
             <p class="section-label">Approach map</p>
             <h2 class="section-title" id="workflow-title">From data to evidence.</h2>
           </div>
-          <p class="section-desc">The research workflow that will guide the software design. These stages are shown for orientation only.</p>
+          <p class="section-desc">The working browser workflow. Each capability becomes available as you move through the experiment.</p>
         </div>
 
         <div class="workflow">
@@ -567,7 +567,7 @@
         </div>
         <p class="privacy">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 5v2"/></svg>
-          The current GitHub Pages interface only selects a file locally and displays its name and size. It does not inspect, process, upload, store or transmit the dataset. The experimental engine will be designed separately.
+          Dataset parsing, profiling, strategy trials, comparisons and exports run locally in your browser. Your dataset is not uploaded to a server or stored by this site. Excel parsing loads a public SheetJS library from jsDelivr; only the library code is fetched, not your dataset.
         </p>
       </section>
     </main>
@@ -578,90 +578,6 @@
     </footer>
   </div>
 
-  <script>
-    // Select one dataset locally; no file contents are read or transmitted.
-    const input = document.getElementById("dataset-input");
-    const dropzone = document.getElementById("dropzone");
-    const selectedPanel = document.getElementById("selected-file");
-    const fileName = document.getElementById("file-name");
-    const fileDetail = document.getElementById("file-detail");
-    const message = document.getElementById("message");
-    const removeButton = document.getElementById("remove-file");
-    const allowed = new Set(["csv", "tsv", "xlsx", "xls", "json", "parquet", "txt"]);
-
-    function formatBytes(bytes) {
-      if (bytes === 0) return "0 bytes";
-      const units = ["bytes", "KB", "MB", "GB"];
-      const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
-      return (bytes / Math.pow(1024, index)).toFixed(index === 0 ? 0 : 2) + " " + units[index];
-    }
-
-    function selectFile(file) {
-      message.textContent = "";
-      if (!file) return;
-      const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "";
-      if (!allowed.has(extension)) {
-        input.value = "";
-        selectedPanel.hidden = true;
-        dropzone.hidden = false;
-        message.textContent = "This file type is not supported by the current intake prototype.";
-        return;
-      }
-      fileName.textContent = file.name;
-      fileDetail.textContent = extension.toUpperCase() + " · " + formatBytes(file.size) + " · Selected locally";
-      selectedPanel.hidden = false;
-      dropzone.hidden = true;
-    }
-
-    function clearSelection() {
-      input.value = "";
-      selectedPanel.hidden = true;
-      dropzone.hidden = false;
-      message.textContent = "";
-    }
-
-    input.addEventListener("change", () => selectFile(input.files && input.files[0]));
-    removeButton.addEventListener("click", clearSelection);
-
-    dropzone.addEventListener("click", (event) => {
-      if (event.target.closest("label")) return;
-      input.click();
-    });
-
-    dropzone.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        input.click();
-      }
-    });
-
-    ["dragenter", "dragover"].forEach((eventName) => {
-      dropzone.addEventListener(eventName, (event) => {
-        event.preventDefault();
-        dropzone.classList.add("dragover");
-      });
-    });
-
-    ["dragleave", "drop"].forEach((eventName) => {
-      dropzone.addEventListener(eventName, (event) => {
-        event.preventDefault();
-        dropzone.classList.remove("dragover");
-      });
-    });
-
-    dropzone.addEventListener("drop", (event) => {
-      const file = event.dataTransfer && event.dataTransfer.files[0];
-      if (!file) return;
-      const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "";
-      if (!allowed.has(extension)) {
-        message.textContent = "This file type is not supported by the current intake prototype.";
-        return;
-      }
-      const transfer = new DataTransfer();
-      transfer.items.add(file);
-      input.files = transfer.files;
-      selectFile(file);
-    });
-  </script>
+  <script src="./app.js" defer></script>
 </body>
 </html>

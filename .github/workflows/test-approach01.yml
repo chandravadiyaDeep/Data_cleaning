@@ -1,0 +1,55 @@
+name: Test Approach 01 browser engine
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/test-approach01.yml"
+  pull_request:
+    paths:
+      - "site/**"
+      - ".github/workflows/test-approach01.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate JavaScript syntax
+        run: node --check site/app.js
+      - name: Verify required capabilities and exports are present
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('site/index.html', 'utf8');
+          const js = fs.readFileSync('site/app.js', 'utf8');
+          const required = [
+            'function profileRows',
+            'function buildCandidates',
+            'function runAllTrials',
+            'function runSelectedCombination',
+            'function renderComparison',
+            'function selectResult',
+            'function exportSelected',
+            'function exportReport'
+          ];
+          const missing = required.filter((item) => !js.includes(item));
+          if (missing.length) {
+            console.error('Missing capability functions:', missing.join(', '));
+            process.exit(1);
+          }
+          if (!html.includes('<script src="./app.js" defer></script>')) {
+            throw new Error('The page does not load the browser engine.');
+          }
+          if (!js.includes('cloneRows(state.originalRows)') && !js.includes('cloneRows(original)')) {
+            throw new Error('Independent original-dataset copies are not present.');
+          }
+          console.log('Approach 01 static capability checks passed.');
+          NODE
